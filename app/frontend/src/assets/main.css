@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+    @apply text-6xl;
+}
+
+body {
+    @apply bg-dark;
+}
+
+button {
+    @apply p-2;
+    @apply w-40;
+}
+
+input,textarea {
+    @apply border-2;
+    @apply border-brand;
+    @apply text-brand;
+    @apply pl-1;
+}
+
+.icon {
+        @apply text-brand;
+        @apply h-6;
+        @apply w-6;
+    }
+
+
+
+.blue-button {
+    @apply bg-brand;
+    @apply text-white;
+    @apply p-2;
+    @apply w-auto;
+}
+
+.white-button {
+    @apply p-2;
+    @apply bg-white;
+    @apply text-brand;
+    @apply w-auto;
+    @apply cursor-pointer;
+}
+
+.logo {
+    @apply fill-brand;
+}
+
+.bold-text {
+    @apply font-bold;
+}
+
+.clickable {
+    @apply cursor-pointer;
+}

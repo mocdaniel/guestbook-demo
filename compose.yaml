@@ -1,0 +1,56 @@
+name: guestbook-demo
+
+services:
+  guestbook:
+    build: .
+    container_name: guestbook
+    command:
+    - --db-name=postgres
+    - --db-host=postgres
+    - --db-password=password
+    - --db-user=postgres
+    - --redis-host=redis
+    depends_on:
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+    networks:
+    - guestbook-network
+    ports:
+    - 8080:8080
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres
+    environment:
+    - POSTGRES_PASSWORD=password
+    ports:
+    - 5432:5432
+    image: postgres:12
+    networks:
+    - guestbook-network
+    restart: unless-stopped
+    volumes:
+    - db-data:/data
+
+  redis:
+    container_name: redis
+    ports:
+    - 6379:6379
+    image: redis
+    networks:
+    - guestbook-network
+    restart: unless-stopped
+
+networks:
+  guestbook-network:
+
+volumes:
+  db-data:
