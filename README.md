@@ -55,7 +55,7 @@ and embedding the pre-built, static frontend files.
 The frontend can be built by navigating to `./app/frontend` within the project's repository folder and issuing the following command:
 
 ```
-~ npm run build
+npm run build
 
 > guestbook-demo@1.0.0 build
 > run-p type-check build-only
@@ -83,7 +83,7 @@ As mentioned in the [Architecture](https://github.com/mocdaniel/guestbook-demo#a
 to differentiate between development environment and production behaviour. Therefore, building the Go binary looks like this:
 
 ```
-~ go build -o guestbook -tags prod ./app
+go build -o guestbook -tags prod ./app
 ```
 
 The output directory/name of the Go binary can be set by passing the `-o` flag, the `-tags prod` part is **mandatory**.
@@ -97,7 +97,7 @@ The application exposes multiple settings which can be set using either **comman
 A list of all available command line arguments and their respective defaults can be displayed by passing the `--help`/`-h` flag:
 
 ```
-~ ./guestbook --help
+./guestbook --help
 Usage of ./guestbook:
       --db-host string            PostgreSQL server address (default "localhost")
       --db-max-idle-conns int     PostgreSQL max idle connections (default 25)
@@ -140,7 +140,7 @@ Building the whole application into a single Go binary makes it easily deployabl
 As mentioned in [Running the Application](https://github.com/mocdaniel/guestbook-demo#running-the-application) the application can be run on most OSes by executing the binary either manually:
 
 ```
-~ ./guestbook --db-host postgres.example.com --redis-host redis.example.com --db-user daniel --db-password supersecure
+./guestbook --db-host postgres.example.com --redis-host redis.example.com --db-user daniel --db-password supersecure
 ```
 
 This will run the application in the foreground and log to stdout/stderr. In case you want to run it in the background,
@@ -155,7 +155,7 @@ using very slim and secure [images provided by Chainguard](https://www.chainguar
 For deploying via Docker, you first have to build the image:
 
 ```
-~ docker build -t someuser/somename:someversion .
+docker build -t someuser/somename:someversion .
 ```
 
 Then you can go on and run the application via Docker, either in the foreground or background (by providing the `-d` flag).
@@ -163,13 +163,13 @@ CLI parameters can be provided as **environment variables** or **cmd**, followin
 
 ```
 # configure using environment variables
-~ docker run -d -p 8080:8080 --name guestbook-demo \
+docker run -d -p 8080:8080 --name guestbook-demo \
 -e GUESTBOOK_DB_HOST=postgres.example.com \
 -e GUESTBOOK_REDIS_HOST=redis.example.com \
 someuser/somename:someversion
 
 # configure using CLI parameters
-~ docker run -d -p 8080:8080 --name guestbook-demo someuser/somename:someversion \
+docker run -d -p 8080:8080 --name guestbook-demo someuser/somename:someversion \
 --db-host=postgres.example.com \
 --redis-host=redis.example.com
 ```
@@ -177,8 +177,8 @@ someuser/somename:someversion
 In case you need/want to delete the running container again, issue 
 
 ```
-~ docker stop guestbook-demo
-~ docker rm guestbook-demo
+docker stop guestbook-demo
+docker rm guestbook-demo
 ```
 
 ### Running the Docker Compose Stack
@@ -189,13 +189,13 @@ environment for the guestbook-demo including **PostgreSQL** and **Redis** out of
 To deploy the whole stack either in fore- or background (again, provide the flag `-d`), just run the following command from the repository's root directory:
 
 ```
-~ docker compose up -d 
+docker compose up -d 
 ```
 
 This will build the application's Docker image as defined in the [Dockerfile](Dockerfile) and spin up three containers for the application, PostgreSQL, and Redis. If you need/want to delete the stack again, issue
 
 ```
-~ docker compose down
+docker compose down
 ```
 
 from the repository's root directory.
