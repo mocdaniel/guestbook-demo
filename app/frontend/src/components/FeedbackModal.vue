@@ -45,6 +45,12 @@
                         emit('createdEntry', ["You already submitted feedback!", false])
                     } else {
                         emit('createdEntry', ["Your feedback was submitted successfully.", true])
+                        firstname.value = undefined
+                        lastname.value = undefined
+                        occupation.value = undefined
+                        github.value = undefined
+                        testimonial.value = undefined
+                        rating.value = 3
                     }
                 }
             ).catch(e => {
