@@ -111,6 +111,7 @@ Usage of ./guestbook:
       --port int                  Webserver port (default 8080)
       --redis-host string         Redis server address (default "localhost")
       --redis-port int            Redis port (default 6379)
+      --redis-password string     Redis password (default "")
 ```
 
 ### Configuration via Environment Variables
@@ -130,6 +131,7 @@ Instead of passing runtime configuration via the command line, environment varia
 | `GUESTBOOK_PORT`              | Webserver port                                                                             |
 | `GUESTBOOK_REDIS_HOST`         | Redis server address                                                               |
 | `GUESTBOOK_REDIS_PORT`        | Redis port                                                                                |
+| 'GUESTBOOK_REDIS_PASSWORD'    | Redis password |
 
 ## Deployment
 
