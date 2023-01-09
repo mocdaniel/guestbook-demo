@@ -40,8 +40,9 @@ type databaseCfg struct {
 }
 
 type redisCfg struct {
-	host string
-	port int
+	host     string
+	port     int
+	password string
 }
 
 type config struct {
@@ -108,11 +109,21 @@ func main() {
 	}
 
 	logger.Printf("Connecting to redis cache...")
+
+	var dial func() (redis.Conn, error)
+	if cfg.redis.password == "" {
+		dial = func() (redis.Conn, error) {
+			return redis.Dial("tcp", fmt.Sprintf("%v:%v", cfg.redis.host, cfg.redis.port))
+		}
+	} else {
+		dial = func() (redis.Conn, error) {
+			return redis.Dial("tcp", fmt.Sprintf("%v:%v", cfg.redis.host, cfg.redis.port), redis.DialPassword(cfg.redis.password))
+		}
+	}
+
 	pool := &redis.Pool{
 		MaxIdle: 10,
-		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", fmt.Sprintf("%v:%v", cfg.redis.host, cfg.redis.port))
-		},
+		Dial:    dial,
 	}
 
 	conn := pool.Get()
@@ -194,6 +205,7 @@ func parseConfig() (*config, error) {
 	viper.SetDefault("db-max-idle-time", "15m")
 	viper.SetDefault("redis-host", "localhost")
 	viper.SetDefault("redis-port", 6379)
+	viper.SetDefault("redis-password", "")
 
 	// Define command line options
 	flag.Int("port", 8080, "Webserver port")
@@ -207,6 +219,7 @@ func parseConfig() (*config, error) {
 	flag.String("db-name", "guestbook", "PostgreSQL database")
 	flag.String("db-max-idle-time", "15m", "PostgreSQL max idle time")
 	flag.String("redis-host", "localhost", "Redis server address")
+	flag.String("redis-password", "", "Redis password")
 
 	// Parse command line options into Viper
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
@@ -242,8 +255,9 @@ func parseConfig() (*config, error) {
 			maxIdleTime:  viper.GetString("db-max-idle-time"),
 		},
 		redis: redisCfg{
-			host: viper.GetString("redis-host"),
-			port: viper.GetInt("redis-port"),
+			host:     viper.GetString("redis-host"),
+			port:     viper.GetInt("redis-port"),
+			password: viper.GetString("redis-password"),
 		},
 	}
 
