@@ -10,6 +10,7 @@ services:
     - --db-password=password
     - --db-user=postgres
     - --redis-host=redis
+    - --redis-password=password
     depends_on:
       postgres:
         condition: service_started
@@ -44,13 +45,19 @@ services:
     container_name: redis
     ports:
     - 6379:6379
-    image: redis
+    image: redis:5
     networks:
     - guestbook-network
     restart: unless-stopped
+    volumes:
+    - redis-data:/data
+    command:
+    - "--appendonly yes"
+    - --requirepass password
 
 networks:
   guestbook-network:
 
 volumes:
   db-data:
+  redis-data:
